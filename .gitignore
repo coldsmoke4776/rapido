@@ -1,0 +1,11 @@
+/rapido
+/build/
+/bin/
+/obj/
+*,o
+*.o
+*.out
+.vscode/
+*.swp
+.DS_Store
+*.log
