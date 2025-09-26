@@ -7,6 +7,26 @@
 #include <stdbool.h>  // Boolean type (C99+)
 
 // Todo: Worker thread loop
+static void *worker_thread(void *arg) {
+    threadpool_t *pool = (threadpool_t *)arg;
+    while (true) {
+        pthread_mutex_lock(&pool->lock);
+        while (pool->head == NULL && !pool->stop){
+            pthread_cond_wait(&pool->notify, &pool->lock);
+        }
+        if(pool->stop && pool->head == NULL){
+            pthread_mutex_unlock(&pool->lock);
+            break;
+        }
+        // TODO: dequeue a job here, unlock, run it
+        job_t *job = pool->head;
+        pool-> head = job->next;
+        pthread_mutex_unlock(&pool->lock);
+        job->func(job->arg);
+        free(job);
+    }
+    return NULL;
+}
 
 
 int threadpool_init(threadpool_t *pool, int num_threads) {
@@ -22,4 +42,4 @@ int threadpool_submit(threadpool_t *pool, job_func_t func, void *arg) {
 int threadpool_destroy(threadpool_t *pool) {
     // Todo: fset stop flag, broadcast, join threads, free resources
     return 0;
-}
+};
