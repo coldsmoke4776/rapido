@@ -12,7 +12,7 @@ Built for speed, clarity, and to point you at the *next lever* to pull, not to b
 
 ---
 
-## Features (v1)
+## Features (v0.1)
 
 - Single-IP, CIDR ranges, or text-file input (`.txt`) of IPs.
 - Port range scanning (start/end ports).
@@ -20,6 +20,14 @@ Built for speed, clarity, and to point you at the *next lever* to pull, not to b
 - Quiet mode (`-q`) for compact output and quick results.
 - Summary mode (`-s`) for high-level scan stats.
 - Small, dependency-free C codebase; easy to read and extend.
+
+## Features (v0.2) — Concurrent Scanning (2025-09-28)
+
+**Highlights**
+- ✅ Per-target concurrent scanning using a custom pthreads threadpool
+- ✅ Banner grabbing and service triage
+- ✅ Thread-safe printing of banners (no interleaved multi-line output)
+- ✅ Per-target open/closed counters and summary
 
 ---
 
@@ -86,36 +94,48 @@ Requirements:
             Rapido Reconnaissance Tool              
 ==============================================
 
+===== CONCURRENCY CHECK =====
+Job 0 executed (thread 6097825792)
+Job 1 executed (thread 6097825792)
+Job 2 executed (thread 6097825792)
+Job 3 executed (thread 6097825792)
+Job 4 executed (thread 6097825792)
+Job 5 executed (thread 6097825792)
+Job 6 executed (thread 6097825792)
+Job 7 executed (thread 6097825792)
+Job 8 executed (thread 6097825792)
+Job 9 executed (thread 6097825792)
 ========== Scanning 127.0.0.1 from port 70 to port 90 ==========
-[-] 70/tcp CLOSED on 127.0.0.1
 [-] 71/tcp CLOSED on 127.0.0.1
-[-] 72/tcp CLOSED on 127.0.0.1
-[-] 73/tcp CLOSED on 127.0.0.1
-[-] 74/tcp CLOSED on 127.0.0.1
 [-] 75/tcp CLOSED on 127.0.0.1
 [-] 76/tcp CLOSED on 127.0.0.1
+[-] 70/tcp CLOSED on 127.0.0.1
 [-] 77/tcp CLOSED on 127.0.0.1
+[-] 73/tcp CLOSED on 127.0.0.1
+[-] 74/tcp CLOSED on 127.0.0.1
+[-] 72/tcp CLOSED on 127.0.0.1
 [-] 78/tcp CLOSED on 127.0.0.1
 [-] 79/tcp CLOSED on 127.0.0.1
 Port 80 is open on 127.0.0.1
+[-] 81/tcp CLOSED on 127.0.0.1
+[-] 85/tcp CLOSED on 127.0.0.1
+[-] 83/tcp CLOSED on 127.0.0.1
+[-] 82/tcp CLOSED on 127.0.0.1
+[-] 86/tcp CLOSED on 127.0.0.1
+[-] 84/tcp CLOSED on 127.0.0.1
+[-] 87/tcp CLOSED on 127.0.0.1
+[-] 88/tcp CLOSED on 127.0.0.1
+[-] 90/tcp CLOSED on 127.0.0.1
+[-] 89/tcp CLOSED on 127.0.0.1
 Port 80 is open on 127.0.0.1 Banner: HTTP/1.0 200 OK
 Server: SimpleHTTP/0.6 Python/3.9.6
-Date: Sat, 20 Sep 2025 04:21:24 GMT
+Date: Sun, 28 Sep 2025 15:56:26 GMT
 Content-type: text/html; charset=utf-8
-Content-Length: 352
+Content-Length: 613
 
 
 [!] 80/tcp: Python SimpleHTTP detected — check for directory listing.
-[-] 81/tcp CLOSED on 127.0.0.1
-[-] 82/tcp CLOSED on 127.0.0.1
-[-] 83/tcp CLOSED on 127.0.0.1
-[-] 84/tcp CLOSED on 127.0.0.1
-[-] 85/tcp CLOSED on 127.0.0.1
-[-] 86/tcp CLOSED on 127.0.0.1
-[-] 87/tcp CLOSED on 127.0.0.1
-[-] 88/tcp CLOSED on 127.0.0.1
-[-] 89/tcp CLOSED on 127.0.0.1
-[-] 90/tcp CLOSED on 127.0.0.1
+[*] TCP - Port 80 is OPEN on 127.0.0.1
 --------------Done scanning 127.0.0.1------------------
 [Summary] 127.0.0.1: 1 open, 20 closed
 
@@ -146,6 +166,14 @@ Content-Length: 352
 - Improve triage rules (CMS detection, common service heuristics).
 - JSON output mode for easy automation.
 - Parallel scanning (thread pool / non-blocking sockets) for speed across CIDR ranges.
+
+## Roadmap (v0.3+)
+- Ordered port output (optional printing mode)
+- CLI flags: -q/--quiet, -v/--verbose, --workers N, --timeout ms
+- JSON output / logging to file
+- UDP scanning mode and service-specific probes
+- Fleshed out triage engine
+- Performance tuning & tests (ASAN/Valgrind CI)
 
 
 # Disclaimer

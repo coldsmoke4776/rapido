@@ -36,7 +36,6 @@ typedef struct {
 
 void print_job(void *arg){
     int id = *(int*)arg;
-    printf("===== CONCURRENCY CHECK =====\n");
     printf("Job %d executed (thread %lu)\n", id, (unsigned long)pthread_self());
     free(arg); // free the memory passed in
 }
@@ -48,9 +47,7 @@ void probe_job(void *varg){
 
     if(status ==1) {
         printf("[*] TCP - Port %d is OPEN on %s\n", pa->port, pa->ip);
-    } //else {
-    //    printf("[x] TCP - Port %d is CLOSED on %s\n", pa->port, pa->ip);
-   // }
+    }
 
     //Update counters safely
     pthread_mutex_lock(pa->cnt_lock);
@@ -77,15 +74,18 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    /* submit 10 print jobs to validate pool */
+    //printf("===== CONCURRENCY CHECK =====\n");
+
+
+    /* submit 10 print jobs to validate pool
     for (int i =0; i < 10; i++){
         int *id = malloc(sizeof(int));
         *id = i;
         threadpool_submit(&pool, print_job, id); 
     }
 
-    /* wait for jobs to shut down gracefully */
-    threadpool_destroy(&pool);
+    /* wait for jobs to shut down gracefully
+    threadpool_destroy(&pool); */
 
 
     for (int i = 0; i < target_count; i++) {
